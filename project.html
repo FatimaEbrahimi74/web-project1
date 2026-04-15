@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Student Fee & Expense Tracker</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      width: 400px;
+      border-radius:8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Smart Student Fee & Expenses Tracker</h2>
+
+<!-- Fee Calculator -->
+<div class="box">
+  <h3>Semester Fee Calculator</h3>
+
+  Student ID: <input id="id" type="number">
+  Total Credits: <input id="cre" type="number">
+  Cost per Credit: <input id="cost" type="number">
+  Payment Amount: <input id="pay" type="number">
+  Monthly Budget: <input id="bud" type="number">
+
+  <button onclick="calculate()">Calculate Fee</button>
+
+  <table id="feetable" style="display:none;">
+    <tr>
+      <th>Total Fee</th>
+      <th>Paid</th>
+      <th>Status</th>
+      <th>Budget</th>
+    </tr>
+    <tr>
+      <td id="totalfee"></td>
+      <td id="paid"></td>
+      <td id="status"></td>
+      <td id="budget"></td>
+       
+    </tr>
+  </table>
+</div>
+
+<!-- Expense Tracker -->
+<div class="box">
+  <h3>Expenses Tracker</h3>
+
+  Expense Name: <input id="expname" type="text">
+  Amount: <input id="expamount" type="number">
+
+  <button onclick="add()">Add Expense</button>
+
+  <table id="exptable">
+    <tr>
+      <th>Expense</th>
+      <th>Amount</th>
+    </tr>
+  </table>
+
+  <p><b>Total Expense: </b> <span id="totalexp"> </span></p>
+  <p><b>Final Monthly Budget: </b> <span id="final"> </span></p>
+</div>
+
+<script>
+ // Fee Calculator
+function calculate() {
+  let cre = Number(document.getElementById("cre").value);
+  let cost = Number(document.getElementById("cost").value);
+  let pay = Number(document.getElementById("pay").value);
+  let bud =Number(document.getElementById("bud").value);
+  
+  
+  let total = cre * cost;
+  let message = "";
+
+  if (pay >= total) {
+    message = "You have no pending fees";
+  } else {
+    message = "You have dues to be paid";
+  }
+  let budget=bud;
+
+  document.getElementById("totalfee").innerHTML = total;
+  document.getElementById("paid").innerHTML = pay;
+  document.getElementById("status").innerHTML = message;
+  document.getElementById("budget").innerHTML = budget;
+
+  document.getElementById("feetable").style.display = "table";
+}
+
+// Expenses Tracker
+let totex = 0;
+
+function add() {
+  let name = document.getElementById("expname").value;
+  let amount = Number(document.getElementById("expamount").value);
+  let finalbud = Number(document.getElementById("bud").value);
+
+  if (name === "" || amount <= 0) {
+    alert("Enter valid expense!");
+    return;
+  }
+
+  let table = document.getElementById("exptable");
+  let row = table.insertRow();
+
+  row.insertCell(0).innerHTML = name;
+  row.insertCell(1).innerHTML = amount;
+
+  totex += amount;
+  finalbud=finalbud-totex;
+
+  document.getElementById("totalexp").innerHTML = totex;
+  document.getElementById("final").innerHTML = finalbud;
+  document.getElementById("expname").value = "";
+  document.getElementById("expamount").value = "";
+}
+</script> 
+
+</body>
+</html>
